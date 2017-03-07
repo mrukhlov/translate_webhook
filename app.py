@@ -18,7 +18,8 @@ _TRANSLATE_ERROR,
 _TRANSLATE_NETWORK_ERROR
 )
 
-_GOOGLE_API_KEY = 'AIzaSyBGVMToNqk9AmN7NIRto01fm6ydJstTjE8'
+from key import _GOOGLE_API_KEY
+
 _LANGUAGE_DETECTION_SERVICE_URL = 'https://translation.googleapis.com/language/translate/v2/detect'
 _TRANSLATION_SERVICE_URL = 'https://translation.googleapis.com/language/translate/v2'
 
