@@ -18,7 +18,7 @@ _TRANSLATE_ERROR,
 _TRANSLATE_NETWORK_ERROR
 )
 
-_GOOGLE_API_KEY = ''
+_GOOGLE_API_KEY = 'AIzaSyBGVMToNqk9AmN7NIRto01fm6ydJstTjE8'
 _LANGUAGE_DETECTION_SERVICE_URL = 'https://translation.googleapis.com/language/translate/v2/detect'
 _TRANSLATION_SERVICE_URL = 'https://translation.googleapis.com/language/translate/v2'
 
@@ -121,14 +121,17 @@ def translate(req):
 		res = random.choice(_TRANSLATE_NETWORK_ERROR)
 		return {"speech": res, "displayText": res, 'contextOut': context}
 	try:
-		text = r.json().get('data').get('translations')[0].get('translatedText')
-		if lang_from in language_dict.values():
-			lang_from = language_code_dict[lang_from]
+		if r.json().get('data'):
+			text = r.json().get('data').get('translations')[0].get('translatedText')
+			if lang_from in language_dict.values():
+				lang_from = language_code_dict[lang_from]
 
-		try:
-			res = random.choice(_TRANSLATE_RESULT).format(fromLang=lang_from, toLang=lang_to, text=text.capitalize())
-		except UnicodeEncodeError:
-			res = random.choice(_TRANSLATE_RESULT).format(fromLang=lang_from, toLang=lang_to, text=text.encode('utf8').capitalize())
+			try:
+				res = random.choice(_TRANSLATE_RESULT).format(fromLang=lang_from, toLang=lang_to, text=text.capitalize())
+			except UnicodeEncodeError:
+				res = random.choice(_TRANSLATE_RESULT).format(fromLang=lang_from, toLang=lang_to, text=text.encode('utf8').capitalize())
+		else:
+			res = random.choice(_TRANSLATE_ERROR)
 	except KeyError:
 		res = random.choice(_TRANSLATE_ERROR)
 
@@ -136,7 +139,7 @@ def translate(req):
 
 
 if __name__ == '__main__':
-	port = int(os.getenv('PORT', 5001))
+	port = int(os.getenv('PORT', 5000))
 
 	app.run(
 		debug=True,
